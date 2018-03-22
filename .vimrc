@@ -79,7 +79,11 @@ set background=dark
 
 map <C-n> :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
-nnoremap ,t :NERDTree %<CR>
+nnoremap ;t :NERDTree %<CR>
+
+nnoremap ;gb :Gblame<CR>
+nnoremap ;gs :Gstatus<CR>
+nnoremap ;gd :Gdiff<CR>
 
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -100,15 +104,14 @@ set tags+=../.tags
 set tags+=.tags
 
 " binds
-nnoremap ,w :set path+=**<CR>
-nnoremap ,, :nohlsearch<CR>
-nnoremap ,a :bp<CR>
-nnoremap ,f :bn<CR>
-nnoremap ,c :close<CR>
+nnoremap ;p :set path+=**<CR>
+nnoremap ;h :nohlsearch<CR>
+nnoremap ;a :bp<CR>
+nnoremap ;f :bn<CR>
+nnoremap ;d :bd<CR>
+nnoremap ;c :close<CR>
 " search under cursor recursive in current directory in rb
-nnoremap ,s :grep!<Space><C-R><C-W><Space>**/*.rb<CR>:cw<CR>
-" spell
-nnoremap ,z :setlocal spell! spelllang=en_us<CR>
+nnoremap ;s :grep!<Space><C-R><C-W><Space>**/*.rb<CR>:cw<CR>
 " search
 command -nargs=+ -complete=file -bar Grep silent! grep! <args>|cwindow|redraw!
 
