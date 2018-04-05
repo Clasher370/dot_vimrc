@@ -106,21 +106,33 @@ set tags+=.tags
 " binds
 nnoremap ;p :set path+=**<CR>
 nnoremap ;h :nohlsearch<CR>
+nnoremap ;c :close<CR>
+nnoremap ;o <C-W>o<CR>
+" insert_m new line
+nnoremap ;<CR> o<Esc>
+" insert_m space
+nnoremap ;<Space> i<Space><Esc>l
+" buffer moves
 nnoremap ;a :bp<CR>
 nnoremap ;f :bn<CR>
 nnoremap ;d :bd<CR>
-nnoremap ;c :close<CR>
 " search under cursor recursive in current directory in rb
 nnoremap ;s :grep!<Space><C-R><C-W><Space>**/*.rb<CR>:cw<CR>
-" search
+" search manualy
 command -nargs=+ -complete=file -bar Grep silent! grep! <args>|cwindow|redraw!
+" search word under cursor in file
+nnoremap ;/ ?<C-R><C-W><CR>
+" togging
+nnoremap ,c :set cursorcolumn!<CR>
+nnoremap ,l :set cursorline!<CR>
+nnoremap ,r :set relativenumber!<CR>
 
 " From thoughtbot dotfiles
 " Get off my lawn
-nnoremap <Left> :echoe "Use h"<CR>
-nnoremap <Right> :echoe "Use l"<CR>
-nnoremap <Up> :echoe "Use k"<CR>
-nnoremap <Down> :echoe "Use j"<CR>
+nnoremap <Left> :echoe "Use key 'h'"<CR>
+nnoremap <Right> :echoe "Use key 'l'"<CR>
+nnoremap <Up> :echoe "Use key 'k'"<CR>
+nnoremap <Down> :echoe "Use key 'j'"<CR>
 
 " Quicker window movement
 nnoremap <C-j> <C-w>j
