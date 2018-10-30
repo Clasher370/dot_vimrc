@@ -1,11 +1,15 @@
-" Setup - - - - - - - - - - 
+" Setup - - - - - - - - - -
 
 set nocompatible " Disable Vi behavior
+let &t_8f="\<Esc>[38;2;%lu;%lu;%lum"
+let &t_8b="\<Esc>[48;2;%lu;%lu;%lum"
+set termguicolors
 
 filetype plugin on
 
 if executable('ag')
   set grepprg=ag\ --nogroup\ --nocolor
+  let g:gitgutter_grep = 'ag'
 endif
 
 " Search
@@ -15,16 +19,11 @@ set hlsearch
 set incsearch
 
 " Look
-syntax enable 
+syntax enable
 
-set number
-set numberwidth=5
-set relativenumber
+" set numberwidth=5
 set ruler "show cursor position
 set showcmd "show commands in Normal mode
-
-set cursorline
-set colorcolumn=81,101
 
 " Tabs
 set tabstop=2
@@ -47,8 +46,17 @@ set splitright
 
 set noswapfile
 set autowrite     " Automatically :write before running commands
+set updatetime=100
+set signcolumn=no
+set mouse=""
 
-" End Setup - - - - - - - - - - 
+" Gitcommit
+autocmd Filetype gitcommit setlocal spell textwidth=72
+
+" Buffer setup
+set hidden
+
+" End Setup - - - - - - - - - -
 
 call plug#begin('~/.vim/plugged')
 
@@ -67,15 +75,30 @@ Plug 'Xuyuanp/nerdtree-git-plugin'
 Plug 'tpope/vim-fugitive'
 
 Plug 'tpope/vim-surround'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-repeat'
 
 Plug 'tpope/vim-rails'
 
+" Plug 'bling/vim-airline'
+" Plug 'vim-airline/vim-airline-themes'
+
+Plug 'airblade/vim-gitgutter'
+
+Plug 'thoughtbot/vim-rspec'
+
+Plug 'leafgarland/typescript-vim'
+
+Plug '/usr/local/opt/fzf'
+Plug 'junegunn/fzf.vim'
+
 call plug#end()
 
-" Plugin Setup - - - - - - - - - - 
+" Plugin Setup - - - - - - - - - -
 
+set background=light
+let g:gruvbox_italic=1
 colorscheme gruvbox
-set background=dark
 
 map <C-n> :NERDTreeToggle<CR>
 let NERDTreeShowHidden=1
@@ -94,9 +117,39 @@ let g:syntastic_loc_list_height = 2
 let g:syntastic_check_on_wq = 0
 let g:syntastic_ruby_checkers = ['mri', 'rubocop']
 
-" End Plugin Setup - - - - - - - - - - 
+" let g:airline_theme='gruvbox'
+" let g:airline#extensions#tabline#enabled = 1
+" let g:airline#extensions#tabline#fnamemod = ':t'
+" let g:airline#extensions#tabline#formatter = 'unique_tail'
 
-" Bind - - - - - - - - - - 
+" RSpec.vim mappings
+map <Leader>t :call RunCurrentSpecFile()<CR>
+map <Leader>s :call RunNearestSpec()<CR>
+map <Leader>l :call RunLastSpec()<CR>
+map <Leader>a :call RunAllSpecs()<CR>
+
+" FZF fuzzy filesystem search
+nnoremap ;f :FZF<CR>
+nnoremap ;b :Buffers<CR>
+
+let g:fzf_colors =
+      \ { 'fg':      ['fg', 'Normal'],
+  \ 'bg':      ['bg', 'Normal'],
+  \ 'hl':      ['fg', 'Comment'],
+  \ 'fg+':     ['fg', 'CursorLine', 'CursorColumn', 'Normal'],
+  \ 'bg+':     ['bg', 'CursorLine', 'CursorColumn'],
+  \ 'hl+':     ['fg', 'Statement'],
+  \ 'info':    ['fg', 'PreProc'],
+  \ 'border':  ['fg', 'Ignore'],
+  \ 'prompt':  ['fg', 'Conditional'],
+  \ 'pointer': ['fg', 'Exception'],
+  \ 'marker':  ['fg', 'Keyword'],
+  \ 'spinner': ['fg', 'Label'],
+  \ 'header':  ['fg', 'Comment'] }
+
+" End Plugin Setup - - - - - - - - - -
+
+" Bind - - - - - - - - - -
 
 " tags for binomo
 command! MakeTags !ctags -R -f .tags --languages=Ruby .
@@ -113,19 +166,23 @@ nnoremap ;<CR> o<Esc>
 " insert_m space
 nnoremap ;<Space> i<Space><Esc>l
 " buffer moves
-nnoremap ;a :bp<CR>
-nnoremap ;f :bn<CR>
+nnoremap ;j :bp<CR>
+nnoremap ;; :bn<CR>
 nnoremap ;d :bd<CR>
 " search under cursor recursive in current directory in rb
 nnoremap ;s :grep!<Space><C-R><C-W><Space>**/*.rb<CR>:cw<CR>
 " search manualy
 command -nargs=+ -complete=file -bar Grep silent! grep! <args>|cwindow|redraw!
-" search word under cursor in file
-nnoremap ;/ ?<C-R><C-W><CR>
 " togging
 nnoremap ,c :set cursorcolumn!<CR>
 nnoremap ,l :set cursorline!<CR>
 nnoremap ,r :set relativenumber!<CR>
+nnoremap ,n :set number!<CR>
+"column hl
+nnoremap ,sc :set colorcolumn=81,101<CR>
+nnoremap ,uc :set colorcolumn=<CR>
+" rspec
+nnoremap ;r :!bin/rspec % -fd --order rand<CR>
 
 " From thoughtbot dotfiles
 " Get off my lawn
@@ -143,4 +200,4 @@ nnoremap <C-l> <C-w>l
 " Switch between the last two files
 nnoremap <Leader><Leader> <C-^>
 
-" End Bind - - - - - - - - - - 
+" End Bind - - - - - - - - - -
